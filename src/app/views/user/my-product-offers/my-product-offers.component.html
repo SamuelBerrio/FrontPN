@@ -1,0 +1,16 @@
+<div *ngIf="offers && offers.length > 0" class="offers-container">
+  <div *ngFor="let offer of offers" class="offer-card">
+    <h3>Oferta</h3>
+    <p>ID Producto Intercambiado: {{ offer.exchangedProductId }}</p>
+    <p>Nombre Ofertante: {{ offer.offererName }}</p>
+    <p>Valor Monetario: {{ offer.monetaryValue | currency }}</p>
+    <p>Fecha de Oferta: {{ offer.offerDate | date }}</p>
+    <p>Estado: {{ offer.state }}</p>
+    <p *ngIf="offer.transactionId">ID Transacción: {{ offer.transactionId }}</p>
+    <div class="offer-actions">
+      <button *ngIf="!offer.transactionId" (click)="acceptOffer(offer.idOffer)" class="btn btn-success">Aceptar</button>
+      <button *ngIf="!offer.transactionId" (click)="rejectOffer(offer.idOffer)" class="btn btn-danger">Rechazar</button>
+      <a *ngIf="offer.transactionId" [href]="getWhatsAppLink(offer.offererPhone)" class="btn btn-whatsapp" target="_blank">Coordinar Entrega</a>
+    </div>
+  </div>
+</div>
