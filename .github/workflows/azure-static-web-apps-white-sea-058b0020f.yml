@@ -11,7 +11,6 @@ on:
 
 jobs:
   build_and_deploy_job:
-    if: github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.action != 'closed')
     runs-on: ubuntu-latest
     name: Build and Deploy Job
     permissions:
@@ -19,38 +18,28 @@ jobs:
       contents: read
     steps:
       # Checkout the repository
-      - name: Checkout Repository
+      - name: Checkout Code
         uses: actions/checkout@v3
 
-      # Setup Node.js
+      # Set up Node.js
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '20' # Usamos Node.js 20, recomendado por Azure
+          node-version: '20'  # Versión recomendada para Azure Static Web Apps
 
       # Install dependencies
       - name: Install Dependencies
         run: npm install
 
-      # Build the Angular app
+      # Build the Angular App
       - name: Build Angular App
-        run: npm run build --if-present -- --configuration production
+        run: npm run build -- --configuration production
 
       # Deploy to Azure Static Web Apps
-      - name: Deploy to Azure
+      - name: Deploy to Azure Static Web Apps
         uses: Azure/static-web-apps-deploy@v1
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_WHITE_SEA_058B0020F }}
-          app_location: "/" # Ruta al código fuente de la app
-          api_location: "" # Ruta de la API (si no tienes API, déjalo vacío)
-          output_location: "dist/frontend" # Directorio de salida de la app construida
-
-  close_pull_request_job:
-    if: github.event_name == 'pull_request' && github.event.action == 'closed'
-    runs-on: ubuntu-latest
-    name: Close Pull Request Job
-    steps:
-      - name: Close Pull Request
-        uses: Azure/static-web-apps-deploy@v1
-        with:
-          action: "close"
+          app_location: "/"  # Directorio raíz del código fuente
+          output_location: "dist/frontend"  # Directorio de salida (compilado) de Angular
+          api_location: ""  # Si no hay API, deja esto vacío
