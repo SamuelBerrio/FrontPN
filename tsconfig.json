@@ -15,12 +15,14 @@
     "moduleResolution": "node",
     "importHelpers": true,
     "target": "ES2022",
-    "module": "ES2022",
+    "module": "ESNext",  // Cambiado a "ESNext" para mejor compatibilidad con Node 20
     "useDefineForClassFields": false,
+    "forceConsistentCasingInFileNames": true, // Añadido para garantizar consistencia en los nombres de archivos
     "lib": [
       "ES2022",
       "dom"
-    ]
+    ],
+    "types": ["node", "jasmine"] // Añadido para incluir los tipos de Node.js en el proyecto
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
